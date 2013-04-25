@@ -15,7 +15,8 @@ the plugin shall automatically load your dic files.
 
 For the stopword dic file, you can write every line in the following format:
 
-的  _stop 1000 \n
-和  _stop 1000 \n
+的  _stop 1000 
+
+和  _stop 1000
 
 Words are separated using TAB(\t).
