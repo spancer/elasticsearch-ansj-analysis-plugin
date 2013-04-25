@@ -11,3 +11,11 @@ stopLibrary.dic (you should name it as stopLibrary.dic) under directory
 At the same time, you may want to load user library, in order to do that, you 
 can easily put your dic files under '%ES_HOME%/config/ansj/library/userLibrary',
 the plugin shall automatically load your dic files.
+
+
+For the stopword dic file, you can write every line in the following format:
+
+的  _stop 1000
+和  _stop 1000
+
+Words are separated using TAB(\t).
