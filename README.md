@@ -7,12 +7,11 @@ Integrated the lastest ansj analyzer code, and added stopwords functionality.
 
 How to Install?
 -------------------------
-1. Download the project, run maven install and put the jar file to ES directory, plugins/analysis-ansj/
+1. Download 3 jar files (ansj_seg-0.9 jar,  tree_split-1.0.1.jar, elasticsearch-ansj-analyzer-plugin-0.90.0.jar) from and put them under ES plugins directory. Should create analysis-ansj directory under plugins
+   directory. Download URL :https://github.com/spancer/elasticsearch-ansj-analysis-plugin/tree/master/lib
 
-2. Download ansj_seg-0.9 jar and tree_split-1.0.1.jar from https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj.
-   Move these jars to ES directory under plugins/analysis-ansj.
-  
-3. Create directory ansj under ES config directory. Download the library.zip and decompress it to ansj directory.
+2. Create directory ansj under ES config directory. Download the library.zip and decompress it to ansj directory.
+   Download URL： https://github.com/spancer/elasticsearch-ansj-analysis-plugin/blob/master/ansj/library.zip
 
-4. Getting ES started.
+3. Getting ES started.
 
