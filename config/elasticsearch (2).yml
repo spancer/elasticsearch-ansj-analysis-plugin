@@ -1,0 +1,8 @@
+index:
+  analysis:
+    analyzer:
+      ansj:
+          alias: [ansj_analyzer]
+          type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
+          
+index.analysis.analyzer.default.type : "ansj"
