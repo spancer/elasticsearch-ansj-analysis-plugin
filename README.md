@@ -22,7 +22,7 @@ Steps for Installation
 Documentation
 -------------
 Configuration in elasticsearch.yml
-
+<pre>
 index:
   analysis:                   
     analyzer:      
@@ -30,9 +30,11 @@ index:
           alias: [ansj_analyzer]
           type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
           is_standard: true
+ </pre>
  Or
+ <pre>
 index.analysis.analyzer.ansj.type : "ansj"
-
+</pre>
 
 Params Setting Guide
 ---------------------
@@ -40,6 +42,7 @@ Actually, while indexing, we reecommend using the index analysis instead of usin
 as to get the most granular segmentations to make our search much accurater.
 
 Config an index analyzer using the param is_standard under 'false' value. e.g.:
+ <pre>
  index:
   analysis:                   
     analyzer: 
@@ -47,11 +50,14 @@ Config an index analyzer using the param is_standard under 'false' value. e.g.:
           alias: [ansj_analyzer]
           type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
           is_standard: false
+</pre>
 
 Config a search or standard analysis, set the is_standard to 'true'. e.g.:
+<pre>
 index:
   analysis:                   
     analyzer: 
        ansj_search_anlayzer:
           type: ansj
           is_standard: true
+</pre>
