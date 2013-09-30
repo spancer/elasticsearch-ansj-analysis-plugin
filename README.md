@@ -13,5 +13,5 @@ How to Install?
 2. Create directory ansj under ES config directory. Download the library.zip and decompress it to ansj directory.
    Download URL： https://github.com/spancer/elasticsearch-ansj-analysis-plugin/blob/master/ansj/library.zip
 
-3. Getting ES started.
+3. Get ES started.
 
