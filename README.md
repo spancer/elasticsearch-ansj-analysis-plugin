@@ -71,6 +71,8 @@ It's not accurate, you may not get what you want after analyzed.
 
 And I suggest using smart chinese instead, it's stable, and supported and tested by ES Team.
 
+Most important is that, it's based on HHMM algorithm, same as ICTCLAS itself.
+
 URL: https://github.com/elasticsearch/elasticsearch-analysis-smartcn
 
 </pre>
