@@ -64,6 +64,7 @@ index:
 
 
 Advice OR Notice:
+-----------------
 <pre>
 
 Ansj is somewhat unstable, this happens between analyze the similar words and sentences, or even words seperated with whitespace.
