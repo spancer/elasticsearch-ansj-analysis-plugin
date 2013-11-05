@@ -61,3 +61,16 @@ index:
           type: ansj
           is_standard: true
 </pre>
+
+<pre>
+Advice:
+
+Ansj is somewhat unstable, this happens between analyze the similar words and sentences, or even words seperated with whitespace.
+
+It's not accurate, you may not get what you want after analyzed. 
+
+And I suggest using smart chinese instead, it's stable, and supported and tested by ES Team.
+
+URL: https://github.com/elasticsearch/elasticsearch-analysis-smartcn
+
+</pre>
