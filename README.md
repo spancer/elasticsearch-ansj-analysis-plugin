@@ -62,8 +62,9 @@ index:
           is_standard: true
 </pre>
 
+
+Advice OR Notice:
 <pre>
-Advice:
 
 Ansj is somewhat unstable, this happens between analyze the similar words and sentences, or even words seperated with whitespace.
 
