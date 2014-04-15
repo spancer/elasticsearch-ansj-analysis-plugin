@@ -1,7 +1,8 @@
 package org.elasticsearch.index.analysis;
 
 import org.ansj.analysis.lucene.AnsjAnalyzer;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.analysis.lucene.util.AnsjEnvironmentInitor;
+import org.apache.lucene.analysis.util.CharArraySet;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
@@ -20,11 +21,12 @@ public class AnsjAnalyzerFactory extends AbstractIndexAnalyzerProvider<AnsjAnaly
 	public AnsjAnalyzerFactory(Index index, @IndexSettings Settings indexSettings, Environment env,
 			@Assisted String name, @Assisted Settings settings)
 	{
+		
 		super(index, indexSettings, name, settings);
-		if (settings.get("is_standard", "true").equals("true"))
-			analyzer = new AnsjAnalyzer(indexSettings, version, ToAnalysis.class);
-		else
-			analyzer = new AnsjAnalyzer(indexSettings, version);
+        final CharArraySet stopWords = AnsjAnalyzer.getDefaultStopSet(env, settings, version);
+        final AnsjEnvironmentInitor.Mode mode = AnsjEnvironmentInitor.getMode(settings);
+        AnsjEnvironmentInitor.loadUserDictionary(env, settings);
+        analyzer = new AnsjAnalyzer(version, mode, stopWords);
 
 	}
 
