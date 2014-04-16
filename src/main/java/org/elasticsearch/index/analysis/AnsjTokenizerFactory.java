@@ -25,11 +25,7 @@ public class AnsjTokenizerFactory extends AbstractTokenizerFactory
 	Set<String> stopwords;
 	
 	AnsjEnvironmentInitor.Mode mode = AnsjEnvironmentInitor.DEFAULT_MODE;
-	@Inject
-	public AnsjTokenizerFactory(Index index, Settings indexSettings, String name, Settings settings)
-	{
-		super(index, indexSettings, name, settings);
-	}
+	
 
 	@Inject
     public AnsjTokenizerFactory(Index index, @IndexSettings Settings indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
