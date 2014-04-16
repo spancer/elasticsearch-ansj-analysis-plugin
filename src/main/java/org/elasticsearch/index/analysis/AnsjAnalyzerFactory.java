@@ -23,7 +23,7 @@ public class AnsjAnalyzerFactory extends AbstractIndexAnalyzerProvider<AnsjAnaly
 	{
 		
 		super(index, indexSettings, name, settings);
-        final CharArraySet stopWords = AnsjAnalyzer.getDefaultStopSet(env, settings, version);
+        final CharArraySet stopWords = AnsjEnvironmentInitor.getDefaultStopSet(env, settings, version);
         final AnsjEnvironmentInitor.Mode mode = AnsjEnvironmentInitor.getMode(settings);
         AnsjEnvironmentInitor.loadUserDictionary(env, settings);
         analyzer = new AnsjAnalyzer(version, mode, stopWords);

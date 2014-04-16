@@ -11,12 +11,14 @@ import java.util.Set;
 import love.cq.util.IOUtil;
 
 import org.ansj.util.MyStaticValue;
+import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.util.Version;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 
-public class AnsjEnvironmentInitor {
+public final class AnsjEnvironmentInitor {
 
 	/**
 	 * Tokenization mode: this determines how the tokenizer handles compound and
@@ -106,6 +108,14 @@ public class AnsjEnvironmentInitor {
 		}
 		logger.info("Ansj stop-word library loaded!");
 		return filters;
+	}
+	
+	public static CharArraySet getDefaultStopSet(Environment env, Settings settings, Version version) {
+		Set<String> stopWords = loadFilters(env, settings);
+		if(stopWords.isEmpty())
+			return CharArraySet.EMPTY_SET;
+		else
+			return CharArraySet.copy(version, stopWords);
 	}
 
 	public static Mode getMode(Settings settings) {

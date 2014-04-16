@@ -1,11 +1,14 @@
 package org.ansj.analysis.lucene;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Set;
 
+import love.cq.domain.Forest;
+
 import org.ansj.analysis.lucene.util.AnsjEnvironmentInitor;
-import org.ansj.lucene.util.AnsjTokenizer;
+import org.ansj.analysis.lucene.util.AnsjEnvironmentInitor.Mode;
+import org.ansj.dic.LearnTool;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
@@ -19,8 +22,6 @@ import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.analysis.util.StopwordAnalyzerBase;
 import org.apache.lucene.util.Version;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
 
 public final class AnsjAnalyzer extends StopwordAnalyzerBase {
 
@@ -30,20 +31,13 @@ public final class AnsjAnalyzer extends StopwordAnalyzerBase {
 
 	public static Set<String> filter;
 
-	private Class<? extends Analysis> analysis;
+	private Mode mode;
 
 	public AnsjAnalyzer(final Version matchVersion,
 			AnsjEnvironmentInitor.Mode mode) {
-		this(matchVersion, mode, DefaultSetHolder.DEFAULT_STOP_SET);
+		this(matchVersion, mode, CharArraySet.EMPTY_SET);
 	}
 
-	public static CharArraySet getDefaultStopSet(Environment env, Settings settings, Version version) {
-		Set<String> stopWords = AnsjEnvironmentInitor.loadFilters(env, settings);
-		if(stopWords.isEmpty())
-			return DefaultSetHolder.DEFAULT_STOP_SET;
-		else
-			return CharArraySet.copy(version, stopWords);
-	}
 
 	/**
 	 * By default, construct the Ansj IndexAnalyzer. And smart ansj default stop
@@ -53,7 +47,7 @@ public final class AnsjAnalyzer extends StopwordAnalyzerBase {
 	 * @param matchVersion
 	 */
 	public AnsjAnalyzer(final Version matchVersion) {
-		this(matchVersion, AnsjEnvironmentInitor.Mode.NORMAL, DefaultSetHolder.DEFAULT_STOP_SET);
+		this(matchVersion, AnsjEnvironmentInitor.Mode.NORMAL);
 	}
 
 	/**
@@ -66,48 +60,23 @@ public final class AnsjAnalyzer extends StopwordAnalyzerBase {
 			CharArraySet stopwords) {
 		super(matchVersion, stopwords);
 		this.matchVersion = matchVersion;
-		if (mode.equals(AnsjEnvironmentInitor.Mode.BASE))
-			this.analysis = BaseAnalysis.class;
-		else if (mode.equals(AnsjEnvironmentInitor.Mode.SEARCH))
-			this.analysis = ToAnalysis.class;
-		else if (mode.equals(AnsjEnvironmentInitor.Mode.SMART))
-			this.analysis = NlpAnalysis.class;
-		else
-			this.analysis = IndexAnalysis.class;
+		this.mode = mode;
 	}
-
-	/**
-	 * Atomically loads DEFAULT_STOP_SET in a lazy fashion once the outer class
-	 * accesses the static final set the first time.
-	 */
-	private static class DefaultSetHolder {
-		static final CharArraySet DEFAULT_STOP_SET;
-
-		static {
-			try {
-				DEFAULT_STOP_SET = loadStopwordSet(true, AnsjAnalyzer.class,
-						"stopwords.txt", "#"); // ignore case
-			} catch (IOException ex) {
-				// default set should always be present as it is part of the
-				// distribution (JAR)
-				throw new RuntimeException(
-						"Unable to load default stopword or stoptag set");
-			}
-		}
-	}
+	
 
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName,
 			Reader reader) {
-		Analysis in;
-		try {
-			in = analysis.getConstructor(Reader.class).newInstance(reader);
-		} catch (Exception e) {
-			throw new RuntimeException(
-					"Smart Ansj analysis can't be instanced, for original ansj analysis can't be instanced!");
-		}
-
-		final Tokenizer tokenizer = new AnsjTokenizer(in, reader, filter,
+		Analysis analysis;
+		if (mode.equals(AnsjEnvironmentInitor.Mode.BASE))
+			analysis = new BaseAnalysis(new BufferedReader(reader));
+		else if (mode.equals(AnsjEnvironmentInitor.Mode.SEARCH))
+			analysis = new ToAnalysis(new BufferedReader(reader));
+		else if (mode.equals(AnsjEnvironmentInitor.Mode.SMART))
+			analysis = new NlpAnalysis(new BufferedReader(reader), new LearnTool(), new Forest[0]);
+		else
+			analysis = new IndexAnalysis(new BufferedReader(reader), new Forest[0]);
+		final Tokenizer tokenizer = new AnsjTokenizer(analysis, reader, filter,
 				pstemming);
 		TokenStream stream = new CJKWidthFilter(tokenizer);
 		stream = new StopFilter(matchVersion, stream, stopwords);

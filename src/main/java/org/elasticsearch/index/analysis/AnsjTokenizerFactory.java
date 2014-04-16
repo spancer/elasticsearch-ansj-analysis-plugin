@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Set;
 
+import org.ansj.analysis.lucene.AnsjTokenizer;
 import org.ansj.analysis.lucene.util.AnsjEnvironmentInitor;
-import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
