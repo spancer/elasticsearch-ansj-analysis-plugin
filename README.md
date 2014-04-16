@@ -10,7 +10,7 @@ Integrated the lastest ansj analyzer code, and added stopwords functionality.
 Steps for Installation
 ----------------------
 
-1. Download 3 jar files (ansj_seg-0.9 jar,  tree_split-1.0.1.jar, elasticsearch-ansj-analyzer-plugin-0.90.0.jar) and put them under ES plugins directory. Should create analysis-ansj directory under plugins
+1. Download 3 jar files (ansj_seg-1.3.jar,  tree_split-1.3.jar, elasticsearch-ansj-analyzer-plugin-1.1.0.jar) and put them under ES plugins directory. Should create analysis-ansj directory under plugins
    directory. Download URL :https://github.com/spancer/elasticsearch-ansj-analysis-plugin/tree/master/lib
 
 2. Create directory ansj under ES config directory. Download the library.zip and decompress it to ansj directory.
@@ -25,11 +25,21 @@ Configuration in elasticsearch.yml
 <pre>
 index:
   analysis:                   
-    analyzer:      
-       ansj:
-          alias: [ansj_analyzer]
+    analyzer: 
+        ansj_normal:
+          alias: [ansj_normal]
           type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
-          is_standard: true
+          mode: normal		  
+        ansj_search:
+          alias: [ansj_search]
+          type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
+          mode: search
+          is_name: true
+        ansj_smart:
+          alias: [ansj_smart]
+          type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
+          mode: smart
+          is_name: true
  </pre>
  Or
  <pre>
@@ -41,25 +51,25 @@ Params Setting Guide
 Actually, while indexing, we reecommend using the index analysis instead of using a standard analysis or search analysis so
 as to get the most granular segmentations to make our search much accurater.
 
-Config an index analyzer using the param is_standard under 'false' value. e.g.:
+Config an index analyzer using the param mode under 'normal' value. e.g.:
  <pre>
  index:
   analysis:                   
     analyzer: 
-        ansj:
-          alias: [ansj_analyzer]
+        ansj_normal:
+          alias: [ansj_analyzer_normal]
           type: org.elasticsearch.index.analysis.AnsjAnalyzerFactory
-          is_standard: false
+          mode: normal
 </pre>
 
-Config a search or standard analysis, set the is_standard to 'true'. e.g.:
+Config a search or standard analysis, set the mode to 'search'. e.g.:
 <pre>
 index:
   analysis:                   
     analyzer: 
        ansj_search_anlayzer:
           type: ansj
-          is_standard: true
+          mode: search
 </pre>
 
 
@@ -73,8 +83,9 @@ It's not accurate, you may not get what you want after analyzed.
 
 And I suggest using smart chinese instead, it's stable, and supported and tested by ES Team.
 
-Most important is that, it's based on HHMM algorithm, same as ICTCLAS itself.
+Most important is that, it's based on HHMM algorithm, same as ICTCLAS itself.Notice: custom-dic not supported.
 
 URL: https://github.com/elasticsearch/elasticsearch-analysis-smartcn
 
+For Chinese users, maybe IK and mmseg is alternative choice.
 </pre>
